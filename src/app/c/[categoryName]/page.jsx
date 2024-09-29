@@ -27,12 +27,15 @@ export default async function ProductCategory({ params, searchParams }) {
         </div>
         <div className="grid grid-cols-5 gap-4">
           {filteredProducts.map((prod) => (
-            <div key={prod.id} className="border p-4">
-              <img src={prod.image} alt={prod.title} className="w-72 h-72" />
-              <h2 className="text-center font-bold">{prod.title}</h2>
-            </div>
+            <Link href={`/p/${prod.title}`}>
+              <div key={prod.id} className="border p-4">
+                <img src={prod.image} alt={prod.title} className="w-72 h-72" />
+                <h2 className="text-center font-bold">{prod.title}</h2>
+              </div>
+            </Link>
           ))}
         </div>
+
         <div className="flex justify-center mt-6 space-x-4">
           {page > 1 && (
             <Link href={`/c/${categoryName}?search=${searchQuery}&page=${page - 1}`}>
@@ -48,7 +51,7 @@ export default async function ProductCategory({ params, searchParams }) {
             </Link>
           )}
         </div>
-      </div>
+      </div >
     </>
   );
 }
