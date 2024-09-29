@@ -4,7 +4,6 @@ import Link from 'next/link'
 export default async function Home() {
   const response = await fetch('https://fakestoreapi.com/products/categories');
   const categories = await response.json();
-  console.log(categories);
   return (
     <div>
       <main>
