@@ -1,4 +1,4 @@
-import SearchInput from './SearchInput';
+import SearchInput from '../../../components/SearchInput';
 import Link from 'next/link';
 
 export default async function ProductCategory({ params, searchParams }) {
