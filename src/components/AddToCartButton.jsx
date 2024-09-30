@@ -1,31 +1,36 @@
-'use client'; // This enables client-side interactivity in Next.js 13+
+'use client'; 
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 const AddToCartButton = ({ product }) => {
-  const [isAdding, setIsAdding] = useState(false);  // Loading state
-  const [successMessage, setSuccessMessage] = useState('');  // Success message
-  const router = useRouter();  // Use router to navigate
-
-  const handleAddToCart = async () => {
+  const [isAdding, setIsAdding] = useState(false);  
+  const [successMessage, setSuccessMessage] = useState('');  
+  const router = useRouter();  
+  const handleAddToCart = () => {
     setIsAdding(true);
+    const existingCart = JSON.parse(localStorage.getItem('cart')) || [];
+    const existingProduct = existingCart.find(item => item.id === product.id);
 
-    // Simulate a mock API call
+    if (existingProduct) {
+      existingProduct.quantity += 1;
+    } else {
+      existingCart.push({ ...product, quantity: 1 });
+    }
+
+    localStorage.setItem('cart', JSON.stringify(existingCart));
+
     setTimeout(() => {
       setIsAdding(false);
       setSuccessMessage(`${product.title} has been added to your cart!`);
-
-      // Navigate to the cart page after a delay
       setTimeout(() => {
-        router.push('/cart');  // Navigate to the cart page
+        router.push('/cart');  
       }, 1500);
-    }, 1000);  // Mock delay for API call
+    }, 1000);
   };
 
   return (
     <div>
-      {/* Add to Cart Button */}
       <button
         onClick={handleAddToCart}
         className={`px-6 py-2 text-white ${isAdding ? 'bg-gray-400' : 'bg-blue-500 hover:bg-blue-600'} rounded`}
@@ -33,8 +38,6 @@ const AddToCartButton = ({ product }) => {
       >
         {isAdding ? 'Adding to Cart...' : 'Add to Cart'}
       </button>
-
-      {/* Success Message */}
       {successMessage && <p className="text-green-500 mt-4">{successMessage}</p>}
     </div>
   );
