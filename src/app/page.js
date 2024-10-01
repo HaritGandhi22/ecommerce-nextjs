@@ -22,6 +22,7 @@ export default async function Home() {
               {category}
             </Link>
           ))}
+          <Link className="mx-4 text-lg capitalize" href='/login'>Login Page</Link>
         </nav>
       </div>
     </div>
