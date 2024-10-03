@@ -1,10 +1,14 @@
-import { ApolloClient, InMemoryCache, HttpLink } from '@apollo/client';
+import { HttpLink } from "@apollo/client";
 
-const client = new ApolloClient({
-    link: new HttpLink({
-        uri: 'https://your-graphql-endpoint.com/graphql', // Replace with your GraphQL endpoint
-    }),
-    cache: new InMemoryCache(),
-});
+import { registerApolloClient, ApolloClient, InMemoryCache } from "@apollo/experimental-nextjs-app-support";
 
-export default client;
+export const {getClient, query, PreloadQuery} = registerApolloClient(() => {
+    return( new ApolloClient({
+        cache: new InMemoryCache(),
+        link: new HttpLink({
+            uri: 'https://rickandmortyapi.com/graphql',
+            fetchOptions: { cache: "no-store" },
+        })
+    })
+    )
+})
