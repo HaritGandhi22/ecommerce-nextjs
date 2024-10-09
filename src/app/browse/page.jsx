@@ -1,38 +1,35 @@
+// RickAndMorty.js
 import { gql } from "@apollo/client";
 import { getClient } from "@/lib/ApolloClient";
-import Link from "next/link";
+import Characters from "@/components/Characters";
 
 const GET_CHARACTERS = gql`
-  query {
-    characters {
+  query GetCharacters($page: Int) {
+    characters(page: $page) {
       results {
         id
         name
         image
+      }
+      info {
+        next
+        prev
       }
     }
   }
 `;
 
 export default async function RickAndMorty() {
+  // Fetch initial data from server-side
+  const { data } = await getClient().query({
+    query: GET_CHARACTERS,
+    variables: { page: 1 }, // start at page 1
+  });
 
-    const { data } = await getClient().query({ query: GET_CHARACTERS })
-
-    return (
-        <>
-            <div className='character'>
-                {data.characters.results.map(char => {
-                    return (
-                        <div>
-                            <Link href={`/browse/${char.id}`}>
-                                <img src={char.image} />
-                                <h2>{char.name}</h2>
-                            </Link>
-                        </div>
-                    )
-                })}
-            </div>
-
-        </>
-    );
+  return (
+    <div>
+      {/* Pass the initial data to the client-side component */}
+      <Characters initialData={data} />
+    </div>
+  );
 }
